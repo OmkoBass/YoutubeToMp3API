@@ -31,12 +31,10 @@ app.get('/search/:keywords/:currentPage', async (req, res) => {
     res.status(200).json(response.videos.slice(currentPage, currentPage + 10))
 });
 
-app.get('/', (req, res) => {
-    YD.download("bR6lbN40-Ho");
+app.get('/video/:id', (req, res) => {
+    YD.download(req.params.id);
 
     YD.on("finished", (err, video) => {
-        console.log(JSON.stringify(video));
-
         res.status(200).sendFile(`${__dirname}/Videos/${video.videoTitle}.mp3`, (err) => {
             if(err) {
                 res.status(500).json({
