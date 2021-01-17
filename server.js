@@ -35,21 +35,15 @@ app.get('/video/:id', (req, res) => {
     YD.download(req.params.id);
 
     YD.on("finished", (err, video) => {
-        res.status(200).sendFile(`${__dirname}/Videos/${video.videoTitle}.mp3`, (err) => {
-            if(err) {
-                res.status(500).json({
-                    message: "Couldn't send file"
-                });
-            } else {
-                console.log(`Sent file: ${video.videoTitle}`);
+        res.status(200).sendFile(`${__dirname}/Videos/${video.videoTitle}.mp3`, _ => {
+            console.log(`Sent file: ${video.videoTitle}`);
 
-                try {
-                    fs.unlinkSync(`${__dirname}/Videos/${video.videoTitle}.mp3`);
-                    console.log(`Deleted file: ${video.videoTitle}`);
-                } catch(err) {
-                    console.log(`Couldn't unlink ${video.videoTitle}`);
-                    console.log(err);
-                }
+            try {
+                fs.unlinkSync(`${__dirname}/Videos/${video.videoTitle}.mp3`);
+                console.log(`Deleted file: ${video.videoTitle}`);
+            } catch(err) {
+                console.log(`Couldn't unlink ${video.videoTitle}`);
+                console.log(err);
             }
         });
     });
