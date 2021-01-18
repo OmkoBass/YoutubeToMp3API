@@ -35,7 +35,15 @@ app.get('/video/:id', (req, res) => {
     YD.download(req.params.id);
 
     YD.on("finished", (err, video) => {
+        const binaryData = fs.readFileSync(`${__dirname}/Videos/${video.videoTitle}.mp3`);
+
+        const base64 = Buffer.from(binaryData).toString('base64');
+
+        video.base64 = base64;
+
         res.status(200).json(video);
+
+        console.log(`File sent: ${video.videoTitle}`);
 
         if(fs.existsSync(`${__dirname}/Videos/${video.videoTitle}.mp3`)) {
             fs.unlinkSync(`${__dirname}/Videos/${video.videoTitle}.mp3`);
@@ -54,13 +62,15 @@ app.get('/video/:id', (req, res) => {
     });
 
     YD.on("progress", progress => {
-        console.log(JSON.stringify(progress));
+        console.log(`Converting: ${progress.progress.percentage}%`);
     });
 
-    YD.on("error", error => {
+    YD.on("error", err => {
         res.status(500).json({
             message: "Couldn't download the file"
-        })
+        });
+
+        console.log(err);
     });
 });
 
