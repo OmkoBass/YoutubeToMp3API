@@ -35,30 +35,14 @@ app.get('/video/:id', (req, res) => {
     YD.download(req.params.id);
 
     YD.on("finished", (err, video) => {
-        const binaryData = fs.readFileSync(`${__dirname}/Videos/${video.videoTitle}.mp3`);
+        res.status(200).sendFile(`${__dirname}/Videos/${video.videoTitle}.mp3`, _ => {
+            console.log(`File sent: ${video.videoTitle}`);
 
-        const base64 = Buffer.from(binaryData).toString('base64');
-
-        video.base64 = base64;
-
-        res.status(200).json(video);
-
-        console.log(`File sent: ${video.videoTitle}`);
-
-        if(fs.existsSync(`${__dirname}/Videos/${video.videoTitle}.mp3`)) {
-            fs.unlinkSync(`${__dirname}/Videos/${video.videoTitle}.mp3`);
-            console.log(`Deleted file: ${video.videoTitle}`);
-        }
-
-        // res.status(200).sendFile(`${__dirname}/Videos/${video.videoTitle}.mp3`, _ => {
-        //     console.log(video);
-        //     console.log(`Sent file: ${video.videoTitle}`);
-
-        //     if(fs.existsSync(`${__dirname}/Videos/${video.videoTitle}.mp3`)) {
-        //         fs.unlinkSync(`${__dirname}/Videos/${video.videoTitle}.mp3`);
-        //         console.log(`Deleted file: ${video.videoTitle}`);
-        //     }
-        // });
+            if(fs.existsSync(`${__dirname}/Videos/${video.videoTitle}.mp3`)) {
+                fs.unlinkSync(`${__dirname}/Videos/${video.videoTitle}.mp3`);
+                console.log(`Deleted file: ${video.videoTitle}`);
+            }
+        });
     });
 
     YD.on("progress", progress => {
