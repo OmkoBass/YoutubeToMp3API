@@ -38,8 +38,8 @@ app.get('/video/:id', (req, res) => {
         res.status(200).sendFile(`${__dirname}/Videos/${video.videoTitle}.mp3`, _ => {
             console.log(`File sent: ${video.videoTitle}`);
 
-            if(fs.existsSync(`${__dirname}/Videos/${video.videoTitle}.mp3`)) {
-                fs.unlinkSync(`${__dirname}/Videos/${video.videoTitle}.mp3`);
+            if(fs.exists(`${__dirname}/Videos/${video.videoTitle}.mp3`)) {
+                fs.unlink(`${__dirname}/Videos/${video.videoTitle}.mp3`);
                 console.log(`Deleted file: ${video.videoTitle}`);
             }
         });
@@ -59,5 +59,5 @@ app.get('/video/:id', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+    console.log(`Listening at http://localhost:${port}`)
 });
