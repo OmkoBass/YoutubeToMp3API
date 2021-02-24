@@ -17,10 +17,6 @@ app.get('/search/:keywords/:currentPage', async (req, res) => {
     const keywords = req.params.keywords; 
     const currentPage = req.params.currentPage;
 
-    const test = await YoutubeSearch(keywords);
-
-    console.log(test)
-
     const response = (await YoutubeSearch(keywords)).all.filter(video => (video.seconds / 60) < 13);
 
     res.status(200).json(response.slice(currentPage, currentPage + 10))
@@ -49,10 +45,6 @@ app.get('/video/:id', (req, res) => {
                 // console.log(`Deleted file: ${video.videoTitle}`);
             // }
         });
-    });
-
-    YD.on("progress", progress => {
-        console.log(`Converting: ${progress.progress.percentage}%`);
     });
 
     YD.on("error", err => {
