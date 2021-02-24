@@ -13,6 +13,12 @@ if(!fs.existsSync(`${__dirname}/Videos`)) {
     fs.mkdirSync(`${__dirname}/Videos`);
 }
 
+app.get('/', (req, res) => {
+    res.status(200).json({
+        message: "Active"
+    })
+});
+
 app.get('/search/:keywords/:currentPage', async (req, res) => {
     const keywords = req.params.keywords; 
     const currentPage = req.params.currentPage;
