@@ -2,6 +2,8 @@
 
 ## API for seraching and converting youtube videos to mp3
 
+## You will need ffmpeg for this, install it and point to it's path
+
 ### Endpoints:
 
 - ## Search Youtube Videos
